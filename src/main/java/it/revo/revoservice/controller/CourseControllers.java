@@ -20,7 +20,7 @@ public class CourseControllers implements CourseControl {
     @Override
     @GetMapping
     public HttpEntity<?> getCourse() {
-        return ResponseEntity.ok(courseRepository.findAll());
+        return ResponseEntity.ok(courseService.getCourse());
     }
 
     @Override

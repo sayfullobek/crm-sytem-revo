@@ -19,4 +19,6 @@ public class ReqRegister {
     private String birthDate;
 
     private String api;
+
+    private String password;
 }

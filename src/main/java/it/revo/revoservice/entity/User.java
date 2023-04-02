@@ -41,6 +41,15 @@ public class User extends AbsEntity implements UserDetails {
     @OneToMany
     private List<Statistics> statistics;
 
+    @OneToOne
+    private Contact contact;
+
+    @OneToMany
+    private List<Accaunts> accaunts;
+
+    @OneToMany
+    private List<WorkProgress> workProgresses;
+
     private boolean enabled = true;
 
     private boolean credentialsNonExpired = true;

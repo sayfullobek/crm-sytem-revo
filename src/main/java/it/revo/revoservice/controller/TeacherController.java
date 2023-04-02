@@ -1,6 +1,8 @@
 package it.revo.revoservice.controller;
 
+import it.revo.revoservice.payload.ApiResponse;
 import it.revo.revoservice.payload.ReqRegister;
+import it.revo.revoservice.payload.TeacherAndPupilAndGroupDtoRes;
 import it.revo.revoservice.repository.UserRepository;
 import it.revo.revoservice.service.TeacherService;
 import it.revo.revoservice.utils.teacherFull.TeacherControl;
@@ -8,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/teacherAndPupil")
@@ -28,6 +32,7 @@ public class TeacherController implements TeacherControl {
         return ResponseEntity.ok(teacherService.getAbout("teacher"));
     }
 
+
     @Override
     @PostMapping
     public HttpEntity<?> addAbout(ReqRegister reqRegister) {
@@ -35,14 +40,20 @@ public class TeacherController implements TeacherControl {
     }
 
     @Override
-    @PutMapping("/{id}")
-    public HttpEntity<?> editAbout(Integer id, ReqRegister reqRegister) {
+    public HttpEntity<?> editAbout(UUID id, ReqRegister reqRegister) {
         return null;
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public HttpEntity<?> deleteAbout(Integer id) {
-        return null;
+    public HttpEntity<?> deleteAbout(UUID id) {
+        ApiResponse apiResponse = teacherService.deleteTeacher(id);
+        return ResponseEntity.status(apiResponse.isSuccess() ? 200 : 409).body(apiResponse);
+    }
+
+    @Override
+    @GetMapping("/getOne/{id}")
+    public HttpEntity<?> getOneAbout(UUID id) {
+        return ResponseEntity.ok(teacherService.getOne(id));
     }
 }

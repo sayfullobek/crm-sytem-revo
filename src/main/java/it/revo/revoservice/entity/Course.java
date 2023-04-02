@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,4 +19,9 @@ public class Course extends AbsNameEntity {
 
     @Column(nullable = false)
     private int expireMonth; //ushbu kurs necha oy davom etadi
+
+    @Column(nullable = false)
+    private String description;
+
+    private UUID photoId;
 }

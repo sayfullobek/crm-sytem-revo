@@ -5,6 +5,7 @@ import it.revo.revoservice.entity.User;
 import it.revo.revoservice.entity.enums.RoleName;
 import it.revo.revoservice.payload.ApiResponse;
 import it.revo.revoservice.payload.ReqRegister;
+import it.revo.revoservice.payload.TeacherAndPupilAndGroupDtoRes;
 import it.revo.revoservice.repository.CourseRepository;
 import it.revo.revoservice.repository.RoleRepository;
 import it.revo.revoservice.repository.UserRepository;
@@ -12,12 +13,10 @@ import it.revo.revoservice.utils.Exception;
 import it.revo.revoservice.utils.teacherFull.TeacherLogic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +24,7 @@ public class TeacherService implements TeacherLogic {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAbout(String api) {
@@ -56,6 +56,10 @@ public class TeacherService implements TeacherLogic {
                     Collections.singletonList(courseRepository.findById(reqRegister.getCourseId()).orElseThrow(() -> new ResourceNotFoundException("getCourse"))),
                     reqRegister.getBirthDate()
             );
+            if (reqRegister.getApi().equals("teacher")) {
+                user.setPassword(passwordEncoder.encode(reqRegister.getPassword()));
+                user.setCode(reqRegister.getPassword());
+            }
             userRepository.save(user);
             return new ApiResponse(Exception.SUCCESS, true);
         }
@@ -63,12 +67,32 @@ public class TeacherService implements TeacherLogic {
     }
 
     @Override
-    public ApiResponse editTeacher(Integer id, ReqRegister reqRegister) {
+    public ApiResponse editTeacher(UUID id, ReqRegister reqRegister) {
         return null;
     }
 
     @Override
-    public ApiResponse deleteTeacher(Integer id) {
-        return null;
+    public ApiResponse deleteTeacher(UUID id) {
+        Optional<User> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            userRepository.deleteById(id);
+            return new ApiResponse(Exception.SUCCESS, true);
+        }
+        return new ApiResponse(Exception.NOT_FOUND, false);
+    }
+
+    @Override
+    public TeacherAndPupilAndGroupDtoRes getOne(UUID id) {
+        try {
+            Optional<User> byId = userRepository.findById(id);
+            if (byId.isPresent()) {
+                User user = byId.get();
+                return TeacherAndPupilAndGroupDtoRes.builder().user(user).build();
+            }
+            return null;
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
