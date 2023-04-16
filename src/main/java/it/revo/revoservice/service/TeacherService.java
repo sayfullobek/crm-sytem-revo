@@ -1,14 +1,10 @@
 package it.revo.revoservice.service;
 
-import it.revo.revoservice.entity.Course;
-import it.revo.revoservice.entity.User;
+import it.revo.revoservice.entity.*;
+import it.revo.revoservice.entity.enums.LidStatus;
 import it.revo.revoservice.entity.enums.RoleName;
-import it.revo.revoservice.payload.ApiResponse;
-import it.revo.revoservice.payload.ReqRegister;
-import it.revo.revoservice.payload.TeacherAndPupilAndGroupDtoRes;
-import it.revo.revoservice.repository.CourseRepository;
-import it.revo.revoservice.repository.RoleRepository;
-import it.revo.revoservice.repository.UserRepository;
+import it.revo.revoservice.payload.*;
+import it.revo.revoservice.repository.*;
 import it.revo.revoservice.utils.Exception;
 import it.revo.revoservice.utils.teacherFull.TeacherLogic;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +19,11 @@ import java.util.*;
 public class TeacherService implements TeacherLogic {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+    private final ContactRepository contactRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccountRepository accountRepository;
+    private final WorkProgressRepository workProgressRepository;
 
     @Override
     public List<User> getAbout(String api) {
@@ -32,7 +31,7 @@ public class TeacherService implements TeacherLogic {
         List<User> all = userRepository.findAll();
         for (User user : all) {
             if (api.equals("pupil") && user.getRole().getRoleName().equals(RoleName.PUPIL)) {
-                User build = User.builder().firstName(user.getFirstName()).lastName(user.getLastName()).phoneNumber(user.getPhoneNumber()).birthDate(user.getBirthDate()).build();
+                User build = User.builder().firstName(user.getFirstName()).lastName(user.getLastName()).phoneNumber(user.getPhoneNumber()).birthDate(user.getBirthDate()).lidStatus(user.getLidStatus()).parentNumber(user.getParentNumber()).build();
                 build.setId(user.getId());
                 users.add(build);
             } else if (api.equals("teacher") && user.getRole().getRoleName().equals(RoleName.TEACHER)) {
@@ -54,11 +53,21 @@ public class TeacherService implements TeacherLogic {
                     reqRegister.getPhoneNumber(),
                     roleRepository.findById(reqRegister.getApi().equals("pupil") ? 3 : 2).orElseThrow(() -> new ResourceNotFoundException("getRole")),
                     Collections.singletonList(courseRepository.findById(reqRegister.getCourseId()).orElseThrow(() -> new ResourceNotFoundException("getCourse"))),
-                    reqRegister.getBirthDate()
+                    reqRegister.getBirthDate(),
+                    reqRegister.getParentNumber()
             );
+            if (reqRegister.getApi().equals("pupil")) {
+                user.setLidStatus(LidStatus.REGISTER);
+            }
+            Contact contact = new Contact(
+                    "https://bootdey.com/img/Content/avatar/avatar7.png", "addressni to'g'rilang"
+            );
+            contact.setName("lavozimni to'g'irlang");
+            Contact save = contactRepository.save(contact);
             if (reqRegister.getApi().equals("teacher")) {
                 user.setPassword(passwordEncoder.encode(reqRegister.getPassword()));
                 user.setCode(reqRegister.getPassword());
+                user.setContact(save);
             }
             userRepository.save(user);
             return new ApiResponse(Exception.SUCCESS, true);
@@ -94,5 +103,38 @@ public class TeacherService implements TeacherLogic {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public ApiResponse addAccount(UUID id, AccountDto accountDto) {
+        Optional<User> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            User user = byId.get();
+            Accounts accounts = new Accounts(
+                    accountDto.getLink(), accountDto.getLogo()
+            );
+            accounts.setName(accountDto.getName());
+            Accounts save = accountRepository.save(accounts);
+            user.getAccaunts().add(save);
+            userRepository.save(user);
+            return new ApiResponse(Exception.SUCCESS, true);
+        }
+        return new ApiResponse(Exception.NOT_FOUND, false);
+    }
+
+    @Override
+    public ApiResponse addWorkProgress(UUID id, WorkProgressDto workProgressDto) {
+        Optional<User> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            User user = byId.get();
+            WorkProgress workProgress = new WorkProgress();
+            workProgress.setName(workProgressDto.getName());
+            workProgress.setProgress(workProgressDto.getProgress());
+            WorkProgress save = workProgressRepository.save(workProgress);
+            user.getWorkProgresses().add(save);
+            userRepository.save(user);
+            return new ApiResponse(Exception.SUCCESS, true);
+        }
+        return new ApiResponse(Exception.NOT_FOUND, false);
     }
 }

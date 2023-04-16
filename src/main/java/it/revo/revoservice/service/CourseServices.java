@@ -9,6 +9,7 @@ import it.revo.revoservice.repository.CourseRepository;
 import it.revo.revoservice.utils.Exception;
 import it.revo.revoservice.utils.courseFull.CourseLogic;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,8 @@ public class CourseServices implements CourseLogic {
                     .price(course.getPrice())
                     .expireMonth(course.getExpireMonth())
                     .description(course.getDescription())
+                    .photoId(course.getPhotoId())
                     .build();
-            HttpEntity<?> file = attachmentService.getFile(course.getPhotoId());
-            build.setFile(file);
             courseDtos.add(build);
         }
         return courseDtos;

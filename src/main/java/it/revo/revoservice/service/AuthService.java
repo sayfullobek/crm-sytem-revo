@@ -20,7 +20,6 @@ public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-
     @Autowired
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -49,40 +48,4 @@ public class AuthService implements UserDetailsService {
             return null;
         }
     }
-
-//    public ApiResponse editFullName(UUID id, ReqRegister reqRegister) {
-//        try {
-//            Optional<User> byId = userRepository.findById(id);
-//            if (byId.isPresent()) {
-//                User user = byId.get();
-//                switch (reqRegister.getMalumot()) {
-//                    case "name and surname":
-//                        user.setFirstName(reqRegister.getFirstName());
-//                        user.setLastName(reqRegister.getLastName());
-//                        break;
-//                    case "email":
-//                        user.setEmail(reqRegister.getEmail());
-//                        break;
-//                    case "phoneNumber":
-//                        user.setPhoneNumber(reqRegister.getPhoneNumber());
-//                        break;
-//                    case "password":
-//                        if (reqRegister.getPassword().equals(reqRegister.getPrePassword())) {
-//                            user.setPassword(passwordEncoder().encode(reqRegister.getPassword()));
-//                            user.setCode(reqRegister.getPassword());
-//                        }
-//                        break;
-//                    case "image":
-//                        user.setImg(reqRegister.getImg());
-//                        break;
-//                }
-//                userRepository.save(user);
-//                return new ApiResponse("successfully edited fullName", true);
-//            } else {
-//                return new ApiResponse("bunday user mavjud emas", false);
-//            }
-//        } catch (Exception e) {
-//            return new ApiResponse("xatolik", false);
-//        }
-//    }
 }

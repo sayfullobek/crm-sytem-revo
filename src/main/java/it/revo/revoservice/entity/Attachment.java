@@ -1,10 +1,7 @@
 package it.revo.revoservice.entity;
 
 import it.revo.revoservice.entity.template.AbsEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +11,7 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Attachment extends AbsEntity {
 
     @Column(nullable = false)

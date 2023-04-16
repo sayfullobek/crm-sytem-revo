@@ -1,7 +1,7 @@
 package it.revo.revoservice.controller;
 
 import it.revo.revoservice.service.AttachmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +11,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/attachment")
+@RequiredArgsConstructor
 public class AttachmentController {
-    @Autowired
-    AttachmentService attachmentService;
+    private final AttachmentService attachmentService;
+
 
     @PostMapping("/upload")
     public HttpEntity<?> upload(MultipartHttpServletRequest request) {

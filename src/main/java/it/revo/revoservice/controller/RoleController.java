@@ -18,7 +18,7 @@ public class RoleController {
     RoleRepository roleRepository;
 
     @GetMapping
-    public HttpEntity<?> getRoles(){
+    public HttpEntity<?> getRoles() {
         List<Role> all = roleRepository.findAll();
         return ResponseEntity.ok(all);
     }

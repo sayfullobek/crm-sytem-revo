@@ -13,9 +13,9 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Contact extends AbsEntity {
-    @Column(nullable = false)
-    private String legalName;
+public class Contact extends AbsNameEntity {
+    @Column(nullable = false, length = 10000)
+    private String photoLink;
 
     private String address;
 }

@@ -1,5 +1,6 @@
 package it.revo.revoservice.entity;
 
+import it.revo.revoservice.entity.enums.LidStatus;
 import it.revo.revoservice.entity.template.AbsEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,8 @@ public class User extends AbsEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String phoneNumber;
 
+    private String parentNumber;
+
     //    @Column(nullable = false)
     private String password;
 
@@ -45,10 +48,13 @@ public class User extends AbsEntity implements UserDetails {
     private Contact contact;
 
     @OneToMany
-    private List<Accaunts> accaunts;
+    private List<Accounts> accaunts;
 
     @OneToMany
     private List<WorkProgress> workProgresses;
+
+    @Enumerated(value = EnumType.STRING)
+    private LidStatus lidStatus;
 
     private boolean enabled = true;
 
@@ -66,13 +72,14 @@ public class User extends AbsEntity implements UserDetails {
         this.code = code;
     }
 
-    public User(String firstName, String lastName, String phoneNumber, Role roles, List<Course> courses, String birthDate) {
+    public User(String firstName, String lastName, String phoneNumber, Role roles, List<Course> courses, String birthDate, String parentNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.role = roles;
         this.courses = courses;
         this.birthDate = birthDate;
+        this.parentNumber = parentNumber;
     }
 
     @Override

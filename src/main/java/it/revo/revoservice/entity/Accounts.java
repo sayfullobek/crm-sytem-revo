@@ -12,9 +12,9 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Accaunts extends AbsNameEntity {
+public class Accounts extends AbsNameEntity {
     @Column(nullable = false, unique = true)
     private String link;
-    
+
     private String logo;
 }

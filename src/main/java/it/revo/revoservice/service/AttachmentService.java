@@ -4,7 +4,7 @@ import it.revo.revoservice.entity.Attachment;
 import it.revo.revoservice.entity.AttachmentContent;
 import it.revo.revoservice.repository.AttachmentContentRepository;
 import it.revo.revoservice.repository.AttachmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +19,10 @@ import java.util.Iterator;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AttachmentService {
-
-    @Autowired
-    AttachmentRepository attachmentRepository;
-    @Autowired
-    AttachmentContentRepository attachmentContentRepository;
+    private final AttachmentRepository attachmentRepository;
+    private final AttachmentContentRepository attachmentContentRepository;
 
     public UUID upload(MultipartHttpServletRequest request) {
         try {

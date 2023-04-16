@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -14,6 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 public class Statistics extends AbsEntity {
+    private Date whenMonth; //hozirgi oyning nomi
     @OneToMany
     private List<Attendance> attendances;
 

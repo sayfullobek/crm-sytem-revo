@@ -5,6 +5,7 @@ import it.revo.revoservice.entity.User;
 import it.revo.revoservice.entity.WeekDays;
 import it.revo.revoservice.entity.enums.RoleName;
 import it.revo.revoservice.entity.enums.WeekDayName;
+import it.revo.revoservice.repository.HistoryRepository;
 import it.revo.revoservice.repository.RoleRepository;
 import it.revo.revoservice.repository.UserRepository;
 import it.revo.revoservice.repository.WeekDayRepository;

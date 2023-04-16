@@ -1,9 +1,7 @@
 package it.revo.revoservice.utils.teacherFull;
 
 import it.revo.revoservice.entity.User;
-import it.revo.revoservice.payload.ApiResponse;
-import it.revo.revoservice.payload.ReqRegister;
-import it.revo.revoservice.payload.TeacherAndPupilAndGroupDtoRes;
+import it.revo.revoservice.payload.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,4 +16,8 @@ public interface TeacherLogic {
     ApiResponse deleteTeacher(UUID id);
 
     TeacherAndPupilAndGroupDtoRes getOne(UUID id);
+
+    ApiResponse addAccount(UUID id, AccountDto accountDto);
+
+    ApiResponse addWorkProgress(UUID id, WorkProgressDto workProgressDto);
 }

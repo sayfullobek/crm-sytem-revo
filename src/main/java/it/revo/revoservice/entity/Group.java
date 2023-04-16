@@ -4,6 +4,7 @@ import it.revo.revoservice.entity.template.AbsNameEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -25,7 +26,7 @@ public class Group extends AbsNameEntity {
     @OneToMany
     private List<User> pupils; //o'quvchilar tvar
 
-    @OneToMany
+    @ManyToMany
     private List<WeekDays> weekDays;
 
     @NotNull

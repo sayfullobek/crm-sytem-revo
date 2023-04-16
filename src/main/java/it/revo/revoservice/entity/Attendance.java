@@ -21,7 +21,7 @@ public class Attendance extends AbsEntity {
 
     private double sum; //har darsda oquvchi qancha pulini yoqotadi
 
-    private String date; //sana
+    private Integer date; //sana
 
     private boolean active; //darsga keldi ketti
 }
